@@ -26,8 +26,10 @@
 from flask import Flask
 import json
 from whos_home_service import *
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 # Update whos_home in background
@@ -35,6 +37,7 @@ update_whos_home_in_background()
 
 @app.route("/people_home")
 def who_is_home():
+    
     return {"data" : get_whos_home()}
 
 if __name__ == "__main__":
