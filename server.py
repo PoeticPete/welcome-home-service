@@ -24,12 +24,14 @@
 """
 
 from flask import Flask
+import json
+
 app = Flask(__name__)
 
 @app.route("/people_home")
-def hello():
-    
-    return "Hello World!"
+def who_is_home():
+    people_at_home = []
+    return {"data" : people_at_home}
 
 if __name__ == "__main__":
     app.run()
