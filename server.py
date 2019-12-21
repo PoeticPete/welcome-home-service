@@ -25,13 +25,13 @@
 
 from flask import Flask
 import json
+from whos_home_service import *
 
 app = Flask(__name__)
 
 @app.route("/people_home")
 def who_is_home():
-    people_at_home = []
-    return {"data" : people_at_home}
+    return {"data" : whos_home}
 
 if __name__ == "__main__":
     app.run()
