@@ -46,7 +46,7 @@ def who_is_home_siri():
 
     for person,is_home in get_whos_home_siri().items():
         if is_home: 
-            people_at_home += " " + str(person)
+            people_at_home += ", " + str(person)
     
     return  people_at_home
 
