@@ -37,5 +37,10 @@ update_whos_home_in_background()
 def who_is_home():
     return {"data" : get_whos_home()}
 
+@app.route("/people_home_siri")
+def who_is_home_siri():
+    return {"data" : get_whos_home()}
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
