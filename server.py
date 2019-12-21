@@ -42,13 +42,13 @@ def who_is_home():
 
 @app.route("/people_home_siri")
 def who_is_home_siri():
-    people_at_home = "" 
+    people_at_home = []
 
     for person,is_home in get_whos_home_siri().items():
         if is_home: 
-            people_at_home += ", " + str(person)
-    
-    return  people_at_home
+            people_at_home.append(person)
+            
+    return  ", ".join(people_at_home)
 
 
 if __name__ == "__main__":
