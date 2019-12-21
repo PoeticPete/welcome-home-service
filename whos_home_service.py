@@ -1,6 +1,7 @@
 import os
 import time
-import multiprocessing
+from threading import Thread
+
 
 # List of people's local IP addresses
 people_ips = [
@@ -31,6 +32,10 @@ for i in people_ips:
 # Define being home as "able to ping phone within last 30 minutes (1800 seconds)"
 IS_HOME_TIMEOUT = 1800
 
+def get_whos_home():
+    global whos_home
+    return whos_home
+
 def continuously_update_whos_home():
     while True:
         # Ping each person's phone
@@ -43,25 +48,22 @@ def continuously_update_whos_home():
 
 
         curr_time = int(time.time())
+        global whos_home
+        whos_home.clear()
         for name in last_successes:
-            for i in whos_home:
-                if i["name"] == name:
-
-                    # set is_home
-                    if curr_time - last_successes[name] >= IS_HOME_TIMEOUT:
-                        i["is_home"] = False
-                    else:
-                        i["is_home"] = True
-                    
-                    # set last_successful_ping
-                    i["last_successful_ping"] = last_successes[name]
-                    break
+            is_home = (curr_time - last_successes[name] < IS_HOME_TIMEOUT)
+            last_successful_ping = last_successes[name]
+            whos_home.append({
+                "name": name,
+                "last_successful_ping": last_successful_ping,
+                "is_home": is_home,
+            })
 
         print(whos_home)
         time.sleep(5)
 
 
 def update_whos_home_in_background():
-    p = multiprocessing.Process(target=continuously_update_whos_home)
-    p.start()
+    thread = Thread(target = continuously_update_whos_home)
+    thread.start()
 
