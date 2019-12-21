@@ -1,6 +1,15 @@
 import os
 import time
+import json
 from threading import Thread
+import boto3
+
+s3 = boto3.resource(
+    's3',
+    region_name='us-east-1',
+    aws_access_key_id="AKIAVIOVVMW3VRHMIQUU",
+    aws_secret_access_key=os.environ['aws_key']
+)
 
 
 # List of people's local IP addresses
@@ -43,8 +52,13 @@ def get_whos_home():
 
 
 def get_whos_home_siri():
-    global whos_home_siri
-    return whos_home_siri
+    people_at_home = []
+
+    for person,is_home in whos_home_siri.items():
+        if is_home: 
+            people_at_home.append(person)
+            
+    return  ", ".join(people_at_home)
 
 def continuously_update_whos_home():
     while True:
@@ -74,6 +88,8 @@ def continuously_update_whos_home():
             })
 
         print(whos_home)
+        s3.Object('who-is-home', 'whos_home.json').put(Body=json.dumps({"data": whos_home}))
+        s3.Object('who-is-home', 'whos_home_siri.txt').put(Body=get_whos_home_siri())
         time.sleep(5)
 
 
