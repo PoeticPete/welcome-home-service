@@ -29,6 +29,7 @@ from whos_home_service import *
 
 app = Flask(__name__)
 
+
 # Update whos_home in background
 update_whos_home_in_background()
 
@@ -37,4 +38,4 @@ def who_is_home():
     return {"data" : get_whos_home()}
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
