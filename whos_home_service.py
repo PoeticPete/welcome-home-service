@@ -65,7 +65,7 @@ def continuously_update_whos_home():
             is_home = (curr_time - last_successes[name] < IS_HOME_TIMEOUT)
 
             if is_home:
-                whos_home_siri[name] = True
+                whos_home_siri[name] = is_home
 
             last_successful_ping = last_successes[name]
             whos_home.append({
