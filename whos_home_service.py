@@ -43,8 +43,8 @@ for i in people_ips:
     last_successes[i[0]] = -1
 
 
-# Define being home as "able to ping phone within last 30 minutes (1800 seconds)"
-IS_HOME_TIMEOUT = 30
+# Define being home as "able to ping phone within last 15 minutes (900 seconds)"
+IS_HOME_TIMEOUT = 900
 
 def get_whos_home():
     global whos_home
@@ -90,7 +90,7 @@ def continuously_update_whos_home():
         print(whos_home)
         s3.Object('who-is-home', 'whos_home.json').put(Body=json.dumps({"data": whos_home}))
         s3.Object('who-is-home', 'whos_home_siri.txt').put(Body=get_whos_home_siri())
-        time.sleep(5)
+        time.sleep(2)
 
 
 def update_whos_home_in_background():
