@@ -35,7 +35,7 @@ for i in people_ips:
 
 
 # Define being home as "able to ping phone within last 30 minutes (1800 seconds)"
-IS_HOME_TIMEOUT = 20
+IS_HOME_TIMEOUT = 30
 
 def get_whos_home():
     global whos_home
