@@ -14,14 +14,19 @@ people_ips = [
     ('Rizzo', '192.168.1.252')
 ]
 
+
 # The variable that will be send to the front end. This array will constantly be updated.
 whos_home = []
+whos_home_siri = {}
 for i in people_ips:
     whos_home.append({
         "name": i[0],
         "is_home": False,
         "last_successful_ping": -1
     })
+    whos_home_siri[i[0]] = False
+
+
 
 # Set last successes
 last_successes = {}
@@ -36,6 +41,11 @@ def get_whos_home():
     global whos_home
     return whos_home
 
+
+def get_whos_home_siri():
+    global whos_home_siri
+    return whos_home_siri
+
 def continuously_update_whos_home():
     while True:
         # Ping each person's phone
@@ -46,12 +56,17 @@ def continuously_update_whos_home():
             if response == 0:
                 last_successes[name] = int(time.time())
 
-
         curr_time = int(time.time())
         global whos_home
+        global whos_home_siri
         whos_home.clear()
+
         for name in last_successes:
             is_home = (curr_time - last_successes[name] < IS_HOME_TIMEOUT)
+
+            if is_home:
+                whos_home_siri[name] = True
+
             last_successful_ping = last_successes[name]
             whos_home.append({
                 "name": name,
@@ -66,4 +81,5 @@ def continuously_update_whos_home():
 def update_whos_home_in_background():
     thread = Thread(target = continuously_update_whos_home)
     thread.start()
+
 
